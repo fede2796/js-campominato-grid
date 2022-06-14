@@ -35,6 +35,53 @@ switch(level){
 
 //Variabile bombe
 const bombs = generateBombs (16 , 1 , maxRangeNumber);
+console.log(bombs);
+//Numero massimo di tentativi
+const maxtry= maxRangeNumber - 16;
+
+//Parte del controllo :
+//Chiedo di inserire un numero con il promt:
+// Se il numero è presente nell'array delle bombe il gioco è finito e ho perso,
+// e inoltre devo indicare tutte le volte che ho beccato un numero che non è una bomba
+//Se il numero non è presente continuo finchè non raggiungo il numero massimo di tentativi per livello
+//e a quel punto ho vinto.
+
+
+//Array dei numeri che non sono bombe
+const numberok = [];
+//Gamecontrol che serve per far finire il gioco
+let gamecontrol = true;
+
+while(gamecontrol){
+    const userNumber = parseInt(prompt('Inserisci un numero:'));
+    if(bombs.includes(userNumber)){
+        gamecontrol = false;
+        end ('lost', numberok);
+    }
+    else{
+       if(!numberok.includes(userNumber)){
+         numberok.push(userNumber);
+       }
+       if(numberok.length === maxtry){
+        gamecontrol = false;
+        end('won', numberok);
+       }
+    }
+    
+}
+
+//FUNCTION
+//Funzione di fine gioco
+function end(endresult, numberok){
+    if(endresult === 'won'){
+        alert('Hai Vinto');
+    }
+    else{
+        alert('Hai Perso');
+        alert('Tentativi azzeccati: ' + numberok.length);
+    }
+
+}
 
 //Devo generare 16 numeri casuali e inserirli in un array e non ci devo essere numeri uguali
 
@@ -47,10 +94,11 @@ function generateBombs(numberElements,rangeMin,rangeMax){
             randomarray.push(random);
         }
     }
-    console.log(randomarray)
+    return randomarray;
 }
 
 //Funzione per i numeri random
 function getRndInteger(min, max) {
     return Math.floor(Math.random() * (max - min + 1) ) + min;
 }
+
